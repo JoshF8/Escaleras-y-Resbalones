@@ -5,8 +5,8 @@ public class Juego {
 	//Datos jugador
 	static String[][] signosJugadores = {{"Jugador 1", "#"},{"Jugador 2", "@"},{"Jugador 3", "%"},{"Jugador 4", "&"}};
 	static String[][] textoJugadores = new String[2][1];
-	static int[][] datosNumerosDeJugadores = new int[2][3];
-	static int maxJugadores = 2, subidas = 1, bajadas = 1;
+	static int[][] datosNumerosDeJugadores = new int[1][3];
+	static int Jugadores = 1, subidas = 1, bajadas = 1;
 	//Datos juego
 	static String[][] tablero = new String[5][5];
 	static int turno = 0;
@@ -49,7 +49,15 @@ public class Juego {
 				tablero[i][j] = " ";
 			}
 		}
-		tablero[tablero.length-1][tablero.length-1] = "#";
+		for(int i = 0; i < Jugadores; i++){
+			datosNumerosDeJugadores[i][0] = tablero.length-1;
+			datosNumerosDeJugadores[i][1] = 0;
+			//cambiar luego esto
+			datosNumerosDeJugadores[i][2] = 2;
+		}
+		for(int i = 0; i < Jugadores; i++){
+			tablero[datosNumerosDeJugadores[i][0]][datosNumerosDeJugadores[i][1]] = signosJugadores[datosNumerosDeJugadores[i][2]][1];
+		}
 	}
 	static void imprimirTablero(){
 		for(int i = 0; i < tablero.length; i++){
