@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.math.*;
 public class Juego {
 	
 	static Scanner teclado = new Scanner(System.in);
@@ -9,7 +10,7 @@ public class Juego {
 	static int Jugadores = 1, subidas = 1, bajadas = 1;
 	//Datos juego
 	static String[][] tablero = new String[5][5];
-	static int turno = 0;
+	static int turno = 1;
 	static boolean activo = false;
 	
 	public static void main(String[] args) {
@@ -44,22 +45,33 @@ public class Juego {
 	}
 	
 	static void inicioJuego(){
-		for(int i = 0; i < tablero.length; i++){
-			for(int j = 0; j < tablero.length; j++){
-				tablero[i][j] = " ";
-			}
-		}
+		limpiarTablero();
 		for(int i = 0; i < Jugadores; i++){
 			datosNumerosDeJugadores[i][0] = tablero.length-1;
 			datosNumerosDeJugadores[i][1] = 0;
 			//cambiar luego esto
 			datosNumerosDeJugadores[i][2] = 2;
 		}
+		posicionarSignos();
+	}
+	
+	static void limpiarTablero(){
+		for(int i = 0; i < tablero.length; i++){
+			for(int j = 0; j < tablero.length; j++){
+				tablero[i][j] = " ";
+			}
+		}
+	}
+	
+	static void posicionarSignos(){
+		limpiarTablero();
 		for(int i = 0; i < Jugadores; i++){
 			tablero[datosNumerosDeJugadores[i][0]][datosNumerosDeJugadores[i][1]] = signosJugadores[datosNumerosDeJugadores[i][2]][1];
 		}
 	}
+	
 	static void imprimirTablero(){
+		
 		for(int i = 0; i < tablero.length; i++){
 			System.out.print("|");
 			for(int j = 0; j < tablero.length; j++){
@@ -67,6 +79,52 @@ public class Juego {
 			}
 			System.out.println("");
 		}
+		System.out.println("==== Menu Juego ====");
+		System.out.println("Turno del jugador " + (datosNumerosDeJugadores[turno - 1][2] + 1));
+		System.out.println("1. Lanzar dado");
+		System.out.println("2. Regresar al menu");
+		int opcion = teclado.nextInt();
+		switch(opcion){
+			case 1:
+					moverJugador((int) (Math.random() * 6) + 1);
+					imprimirTablero();
+				break;
+			case 2:
+				menu();
+				break;
+			default:
+				System.out.println("No es una opcion valida.");
+				imprimirTablero();
+		}
+	}
+	
+	static void moverJugador(int dado){
+		System.out.println("En el dado salio: " + dado);
+		for(int i = 1; i < (dado + 1); i++){
+			/*if(datosNumerosDeJugadores[turno - 1][0]%2 == 0){
+				if(datosNumerosDeJugadores[turno - 1][1] == tablero.length-1){
+					datosNumerosDeJugadores[turno - 1][0]--;
+				}else{
+					datosNumerosDeJugadores[turno - 1][1]++;
+				}
+			}else{
+				if(datosNumerosDeJugadores[turno - 1][1] == 0){
+					datosNumerosDeJugadores[turno - 1][0]--;
+				}else{
+					datosNumerosDeJugadores[turno - 1][1]--;
+				}
+			}*/
+			if(((datosNumerosDeJugadores[turno - 1][1] == 0) && datosNumerosDeJugadores[turno - 1][0]%2 != 0)||((datosNumerosDeJugadores[turno - 1][1] == (tablero.length-1)) && datosNumerosDeJugadores[turno - 1][0]%2 == 0)){
+				datosNumerosDeJugadores[turno - 1][0]--;
+			}else{
+				datosNumerosDeJugadores[turno - 1][1] += Math.pow(-1, datosNumerosDeJugadores[turno - 1][0]);
+			}
+			/*if(tablero[datosNumerosDeJugadores[turno - 1][0]][datosNumerosDeJugadores[turno - 1][1]].equals("$")){
+				//Ganador
+			}*/
+			
+		}
+		posicionarSignos();
 	}
 	
 	static void Configuracion(){
