@@ -48,11 +48,13 @@ public class Juego {
 	
 	static void inicioJuego(){
 		limpiarTablero();
+		datosNumerosDeJugadores = new int[Jugadores][3];
+		textoJugadores = new String[Jugadores][1];
 		for(int i = 0; i < Jugadores; i++){
 			datosNumerosDeJugadores[i][0] = tablero.length-1;
 			datosNumerosDeJugadores[i][1] = 0;
-			datosNumerosDeJugadores[i][2] = i;
 		}
+		ordenarJugadores();
 		PosEspeciales = new int[subidas + bajadas + 1][5];
 		PosEspeciales[0][0] = tablero.length - 1;
 		PosEspeciales[0][1] = 0;
@@ -73,6 +75,24 @@ public class Juego {
 		}
 	}
 	
+	static void ordenarJugadores(){
+		boolean repetido = false;
+		for(int i = 0; i < Jugadores; i++){
+			do{
+				datosNumerosDeJugadores[i][2] = Randomizar(0, Jugadores);
+				for(int j = 0; j < i; j++){
+					repetido = (datosNumerosDeJugadores[i][2] == datosNumerosDeJugadores[j][2]);
+					if(repetido)
+						break;
+				}
+			}while(repetido);
+			repetido = false;
+		}
+		for(int i = 0; i < Jugadores; i++){
+			System.out.println(datosNumerosDeJugadores[i][2]);
+		}
+	}
+	
 	static void posicionarSubBaj(){
 		
 		for(int i = 0; i < subidas; i++){
@@ -82,7 +102,7 @@ public class Juego {
 			}while(!(tablero[PosEspeciales[i + 1][0]][PosEspeciales[i + 1][1]].equals(" ")));
 			tablero[PosEspeciales[i + 1][0]][PosEspeciales[i + 1][1]] = letrasSub[i];
 			do{
-				PosEspeciales[i + 1][2] = Randomizar(0, tablero.length - 1);
+				PosEspeciales[i + 1][2] = Randomizar(1, tablero.length - 1);
 				PosEspeciales[i + 1][3] = Randomizar(0, tablero.length);
 			}while(!(tablero[PosEspeciales[i + 1][2]][PosEspeciales[i + 1][3]].equals(" ")) || (PosEspeciales[i + 1][0] == PosEspeciales[i + 1][2]));
 			tablero[PosEspeciales[i + 1][2]][PosEspeciales[i + 1][3]] = letrasSub[i];
@@ -306,5 +326,18 @@ public class Juego {
 
 	static void NumJugadores(){
 		System.out.println("Ingrese el numero de jugadores (1 minimo y 4 maximo)");
+		System.out.println("Pulse 5 para regresar.");
+		int num = teclado.nextInt();
+		if((num > 4) || (num < 1)){
+			if(num == 5){
+				Configuracion();
+			}
+			System.out.println("No es una opcion valida.");
+			NumJugadores();
+		}else{
+			Jugadores = num;
+			System.out.println("Ahora hay "+Jugadores+" Jugadores");
+			Configuracion();
+		}
 	}
 }
