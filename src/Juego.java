@@ -39,6 +39,8 @@ public class Juego {
 			case 3:
 				Configuracion();
 				break;
+			case 4:
+				return;
 			default:
 				System.out.println("Esa opcion no es valida.");
 				menu();
@@ -87,9 +89,6 @@ public class Juego {
 				}
 			}while(repetido);
 			repetido = false;
-		}
-		for(int i = 0; i < Jugadores; i++){
-			System.out.println(datosNumerosDeJugadores[i][2]);
 		}
 	}
 	
