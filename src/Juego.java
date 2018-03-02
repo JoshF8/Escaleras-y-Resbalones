@@ -1,4 +1,6 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 import java.math.*;
 public class Juego {
 	
@@ -16,8 +18,13 @@ public class Juego {
 	static int[][] PosEspeciales;
 	
 	public static void main(String[] args) {
-		inicioJuego();
-		menu();
+		try{
+			inicioJuego();
+			menu();
+		}catch(InputMismatchException ex){
+			teclado.nextLine();
+			menu();
+		}
 	}
 
 	static void menu(){
@@ -26,25 +33,30 @@ public class Juego {
 		System.out.println("2. Regresar al juego");
 		System.out.println("3. Configuracion");
 		System.out.println("4. Salir");
-		//System.out.println(tablero.length);
-		int opcion = teclado.nextInt();
-		switch(opcion){
-			case 1:
-				inicioJuego();
-				imprimirTablero();
-				break;
-			case 2:
-				imprimirTablero();
-				break;
-			case 3:
-				Configuracion();
-				break;
-			case 4:
-				return;
-			default:
-				System.out.println("Esa opcion no es valida.");
-				menu();
-				break;
+		try{
+			int opcion = teclado.nextInt();
+			switch(opcion){
+				case 1:
+					inicioJuego();
+					imprimirTablero();
+					break;
+				case 2:
+					imprimirTablero();
+					break;
+				case 3:
+					Configuracion();
+					break;
+				case 4:
+					return;
+				default:
+					System.out.println("Esa opcion no es valida.");
+					menu();
+					break;
+			}
+		}catch(InputMismatchException ex){
+			teclado.nextLine();
+			System.out.println("Opcion invalida, intente de nuevo.");
+			menu();
 		}
 	}
 	
@@ -161,19 +173,25 @@ public class Juego {
 		System.out.println("Turno del jugador " + (datosNumerosDeJugadores[turno - 1][2] + 1));
 		System.out.println("1. Lanzar dado");
 		System.out.println("2. Regresar al menu");
-		int opcion = teclado.nextInt();
-		switch(opcion){
-			case 1:
-					moverJugador((int) (Math.random() * 6) + 1);
-					turno = (turno + 1) > Jugadores ? 1: turno + 1; 
+		try{
+			int opcion = teclado.nextInt();
+			switch(opcion){
+				case 1:
+						moverJugador((int) (Math.random() * 6) + 1);
+						turno = (turno + 1) > Jugadores ? 1: turno + 1; 
+						imprimirTablero();
+					break;
+				case 2:
+					menu();
+					break;
+				default:
+					System.out.println("No es una opcion valida.");
 					imprimirTablero();
-				break;
-			case 2:
-				menu();
-				break;
-			default:
-				System.out.println("No es una opcion valida.");
-				imprimirTablero();
+			}
+		}catch(InputMismatchException ex){
+			teclado.nextLine();
+			System.out.println("Opcion invalida, intente de nuevo.");
+			imprimirTablero();
 		}
 	}
 	
@@ -188,7 +206,7 @@ public class Juego {
 			if((datosNumerosDeJugadores[turno -1][0] == 0) && (datosNumerosDeJugadores[turno - 1][1] == tablero.length - 1)){
 				System.out.println("Ha ganado el jugador no. " + turno);
 				posicionarSignos();
-				return;
+				System.exit(0);
 			}
 		}
 		if(!(tablero[datosNumerosDeJugadores[turno - 1][0]][datosNumerosDeJugadores[turno - 1][1]].equals(" "))){
@@ -228,24 +246,30 @@ public class Juego {
 		System.out.println("2. Cantidad de subidas y bajadas");
 		System.out.println("3. Ingresar jugadores");
 		System.out.println("4. Regresar");
-		int opcion = teclado.nextInt();
-		switch(opcion){
-			case 1:
-				opcionDimension();
-				break;
-			case 2:
-				subidasYBajadas();
-				break;
-			case 3:
-				NumJugadores();
-				break;
-			case 4:
-				menu();
-				break;
-			default:
-				System.out.println("Esa opcion no es valida.");
-				Configuracion();
-				break;
+		try{
+			int opcion = teclado.nextInt();
+			switch(opcion){
+				case 1:
+					opcionDimension();
+					break;
+				case 2:
+					subidasYBajadas();
+					break;
+				case 3:
+					NumJugadores();
+					break;
+				case 4:
+					menu();
+					break;
+				default:
+					System.out.println("Esa opcion no es valida.");
+					Configuracion();
+					break;
+			}
+		}catch(InputMismatchException ex){
+			teclado.nextLine();
+			System.out.println("Opcion invalida, intente de nuevo.");
+			Configuracion();
 		}
 	}
 	
@@ -254,6 +278,7 @@ public class Juego {
 		System.out.println("1. Pequeño");
 		System.out.println("2. Grande");
 		System.out.println("3. Regresar");
+		try{
 		int opcion = teclado.nextInt();
 		switch(opcion){
 			case 1:
@@ -276,6 +301,11 @@ public class Juego {
 				opcionDimension();
 				break;
 		}
+		}catch(InputMismatchException ex){
+			teclado.nextLine();
+			System.out.println("Opcion invalida, intente de nuevo.");
+			opcionDimension();
+		}
 	}
 	
 	static void subidasYBajadas(){
@@ -283,42 +313,66 @@ public class Juego {
 		System.out.println("Ingrese la cantidad de subidas: ");
 		if(tablero.length < 11){
 			do{
-				numero = teclado.nextInt();
+				try{
+					numero = teclado.nextInt();
+				}catch(InputMismatchException ex){
+					teclado.nextLine();
+					System.out.println("Opcion invalida, intente de nuevo.");
+					numero = 4;
+				}
 				if(numero > 3){
 					System.out.println("Dado el tamaño del tablero 3 subidas es el maximo, ingrese un nuevo numero.");
 				}else{
 					subidas = numero;
 				}
-			}while(numero > 4);
+			}while(numero > 3);
 		}else{
 			do{
-				numero = teclado.nextInt();
+				try{
+					numero = teclado.nextInt();
+				}catch(InputMismatchException ex){
+					teclado.nextLine();
+					System.out.println("Opcion invalida, intente de nuevo.");
+					numero = 11;
+				}
 				if(numero > 10){
 					System.out.println("Dado el tamaño del tablero 10 subidas es el maximo, ingrese un nuevo numero.");
 				}else{
 					subidas = numero;
 				}
-			}while(numero > 11);
+			}while(numero > 10);
 		}
 		System.out.println("Ingrese la cantidad de bajadas: ");
 		if(tablero.length < 11){
 			do{
-				numero = teclado.nextInt();
+				try{
+					numero = teclado.nextInt();
+				}catch(InputMismatchException ex){
+					teclado.nextLine();
+					System.out.println("Opcion invalida, intente de nuevo.");
+					numero = 4;
+				}
 				if(numero > 3){
 					System.out.println("Dado el tamaño del tablero 3 bajadas es el maximo, ingrese un nuevo numero.");
 				}else{
 					bajadas = numero;
 				}
-			}while(numero > 4);
+			}while(numero > 3);
 		}else{
 			do{
-				numero = teclado.nextInt();
+				try{
+					numero = teclado.nextInt();
+				}catch(InputMismatchException ex){
+					teclado.nextLine();
+					System.out.println("Opcion invalida, intente de nuevo.");
+					numero = 11;
+				}
 				if(numero > 10){
 					System.out.println("Dado el tamaño del tablero 10 bajadas es el maximo, ingrese un nuevo numero.");
 				}else{
 					bajadas = numero;
 				}
-			}while(numero > 11);
+			}while(numero > 10);
 		}
 		Configuracion();
 	}
@@ -326,17 +380,23 @@ public class Juego {
 	static void NumJugadores(){
 		System.out.println("Ingrese el numero de jugadores (1 minimo y 4 maximo)");
 		System.out.println("Pulse 5 para regresar.");
-		int num = teclado.nextInt();
-		if((num > 4) || (num < 1)){
-			if(num == 5){
+		try{
+			int num = teclado.nextInt();
+			if((num > 4) || (num < 1)){
+				if(num == 5){
+					Configuracion();
+				}
+				System.out.println("No es una opcion valida.");
+				NumJugadores();
+			}else{
+				Jugadores = num;
+				System.out.println("Ahora hay "+Jugadores+" Jugadores");
 				Configuracion();
 			}
-			System.out.println("No es una opcion valida.");
+		}catch(InputMismatchException ex){
+			teclado.nextLine();
+			System.out.println("Opcion invalida, intente de nuevo.");
 			NumJugadores();
-		}else{
-			Jugadores = num;
-			System.out.println("Ahora hay "+Jugadores+" Jugadores");
-			Configuracion();
 		}
 	}
 }
