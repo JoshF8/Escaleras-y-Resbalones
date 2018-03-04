@@ -13,7 +13,7 @@ public class Juego {
 	static String[][] tablero = new String[5][5];
 	static int turno = 1;
 	static boolean activo = false;
-	static String letrasSub[] = {"a","b","c","d","e","f","g","h","i","j"};
+	static String letrasSub[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o"};
 	static int[][] PosEspeciales;
 	static int[] lugares = new int[2];
 	
@@ -315,21 +315,21 @@ public class Juego {
 	static void subidasYBajadas(){
 		int numero;
 		System.out.println("Ingrese la cantidad de subidas: ");
-		if(tablero.length < 11){
+		if(tablero.length < 16){
 			do{
 				try{
 					numero = teclado.nextInt();
 				}catch(InputMismatchException ex){
 					teclado.nextLine();
 					System.out.println("Opcion invalida, intente de nuevo.");
-					numero = 4;
+					numero = 5;
 				}
-				if(numero > 3 || numero < 1){
-					System.out.println("Dado el tamaño del tablero 3 subidas es el maximo, ingrese un nuevo numero.");
+				if(numero > 4 || numero < 1){
+					System.out.println("Dado el tamaño del tablero 4 subidas es el maximo, ingrese un nuevo numero.");
 				}else{
 					subidas = numero;
 				}
-			}while(numero > 3 || numero < 1);
+			}while(numero > 4 || numero < 1);
 		}else{
 			do{
 				try{
@@ -337,31 +337,31 @@ public class Juego {
 				}catch(InputMismatchException ex){
 					teclado.nextLine();
 					System.out.println("Opcion invalida, intente de nuevo.");
-					numero = 11;
+					numero = 16;
 				}
-				if(numero > 10 || numero < 1){
-					System.out.println("Dado el tamaño del tablero 10 subidas es el maximo, ingrese un nuevo numero.");
+				if(numero > 15 || numero < 1){
+					System.out.println("Dado el tamaño del tablero 15 subidas es el maximo, ingrese un nuevo numero.");
 				}else{
 					subidas = numero;
 				}
-			}while(numero > 10 || numero < 1);
+			}while(numero > 15 || numero < 1);
 		}
 		System.out.println("Ingrese la cantidad de bajadas: ");
-		if(tablero.length < 11){
+		if(tablero.length < 16){
 			do{
 				try{
 					numero = teclado.nextInt();
 				}catch(InputMismatchException ex){
 					teclado.nextLine();
 					System.out.println("Opcion invalida, intente de nuevo.");
-					numero = 4;
+					numero = 5;
 				}
-				if(numero > 3 || numero < 1){
-					System.out.println("Dado el tamaño del tablero 3 bajadas es el maximo, ingrese un nuevo numero.");
+				if(numero > 4 || numero < 1){
+					System.out.println("Dado el tamaño del tablero 4 bajadas es el maximo, ingrese un nuevo numero.");
 				}else{
 					bajadas = numero;
 				}
-			}while(numero > 3 || numero < 1);
+			}while(numero > 4 || numero < 1);
 		}else{
 			do{
 				try{
@@ -369,14 +369,14 @@ public class Juego {
 				}catch(InputMismatchException ex){
 					teclado.nextLine();
 					System.out.println("Opcion invalida, intente de nuevo.");
-					numero = 11;
+					numero = 16;
 				}
-				if(numero > 10 || numero < 1){
-					System.out.println("Dado el tamaño del tablero 10 bajadas es el maximo, ingrese un nuevo numero.");
+				if(numero > 15 || numero < 1){
+					System.out.println("Dado el tamaño del tablero 15 bajadas es el maximo, ingrese un nuevo numero.");
 				}else{
 					bajadas = numero;
 				}
-			}while(numero > 10 || numero < 1);
+			}while(numero > 15 || numero < 1);
 		}
 		Configuracion();
 	}
