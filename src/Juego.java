@@ -7,7 +7,6 @@ public class Juego {
 	static Scanner teclado = new Scanner(System.in);
 	//Datos jugador
 	static String[][] signosJugadores = {{"Jugador 1", "#"},{"Jugador 2", "@"},{"Jugador 3", "%"},{"Jugador 4", "&"}};
-	static String[][] textoJugadores = new String[2][1];
 	static int[][] datosNumerosDeJugadores = new int[2][3];
 	static int Jugadores = 2, subidas = 1, bajadas = 1;
 	//Datos juego
@@ -16,6 +15,7 @@ public class Juego {
 	static boolean activo = false;
 	static String letrasSub[] = {"a","b","c","d","e","f","g","h","i","j"};
 	static int[][] PosEspeciales;
+	static int[] lugares = new int[2];
 	
 	public static void main(String[] args) {
 		try{
@@ -63,7 +63,7 @@ public class Juego {
 	static void inicioJuego(){
 		limpiarTablero();
 		datosNumerosDeJugadores = new int[Jugadores][3];
-		textoJugadores = new String[Jugadores][1];
+		lugares = new int[Jugadores];
 		for(int i = 0; i < Jugadores; i++){
 			datosNumerosDeJugadores[i][0] = tablero.length-1;
 			datosNumerosDeJugadores[i][1] = 0;
@@ -240,6 +240,10 @@ public class Juego {
 		posicionarSignos();
 	}
 	
+	static void ordenarLugares(){
+		
+	}
+	
 	static void Configuracion(){
 		System.out.println("==== Menu Configuracion ====");
 		System.out.println("1. Dimension del tablero");
@@ -320,12 +324,12 @@ public class Juego {
 					System.out.println("Opcion invalida, intente de nuevo.");
 					numero = 4;
 				}
-				if(numero > 3){
+				if(numero > 3 || numero < 1){
 					System.out.println("Dado el tamaño del tablero 3 subidas es el maximo, ingrese un nuevo numero.");
 				}else{
 					subidas = numero;
 				}
-			}while(numero > 3);
+			}while(numero > 3 || numero < 1);
 		}else{
 			do{
 				try{
@@ -335,12 +339,12 @@ public class Juego {
 					System.out.println("Opcion invalida, intente de nuevo.");
 					numero = 11;
 				}
-				if(numero > 10){
+				if(numero > 10 || numero < 1){
 					System.out.println("Dado el tamaño del tablero 10 subidas es el maximo, ingrese un nuevo numero.");
 				}else{
 					subidas = numero;
 				}
-			}while(numero > 10);
+			}while(numero > 10 || numero < 1);
 		}
 		System.out.println("Ingrese la cantidad de bajadas: ");
 		if(tablero.length < 11){
@@ -352,12 +356,12 @@ public class Juego {
 					System.out.println("Opcion invalida, intente de nuevo.");
 					numero = 4;
 				}
-				if(numero > 3){
+				if(numero > 3 || numero < 1){
 					System.out.println("Dado el tamaño del tablero 3 bajadas es el maximo, ingrese un nuevo numero.");
 				}else{
 					bajadas = numero;
 				}
-			}while(numero > 3);
+			}while(numero > 3 || numero < 1);
 		}else{
 			do{
 				try{
@@ -367,12 +371,12 @@ public class Juego {
 					System.out.println("Opcion invalida, intente de nuevo.");
 					numero = 11;
 				}
-				if(numero > 10){
+				if(numero > 10 || numero < 1){
 					System.out.println("Dado el tamaño del tablero 10 bajadas es el maximo, ingrese un nuevo numero.");
 				}else{
 					bajadas = numero;
 				}
-			}while(numero > 10);
+			}while(numero > 10 || numero < 1);
 		}
 		Configuracion();
 	}
@@ -382,7 +386,7 @@ public class Juego {
 		System.out.println("Pulse 5 para regresar.");
 		try{
 			int num = teclado.nextInt();
-			if((num > 4) || (num < 1)){
+			if((num > 4) || (num < 2)){
 				if(num == 5){
 					Configuracion();
 				}
