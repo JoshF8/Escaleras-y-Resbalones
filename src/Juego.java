@@ -15,7 +15,7 @@ public class Juego {
 	static boolean activo = false;
 	static String letrasSub[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o"};
 	static int[][] PosEspeciales;
-	static int[] lugares = new int[2];
+	static int[][] lugares = new int[2][2];
 	
 	public static void main(String[] args) {
 		try{
@@ -47,6 +47,7 @@ public class Juego {
 					Configuracion();
 					break;
 				case 4:
+					System.exit(0);
 					return;
 				default:
 					System.out.println("Esa opcion no es valida.");
@@ -63,7 +64,7 @@ public class Juego {
 	static void inicioJuego(){
 		limpiarTablero();
 		datosNumerosDeJugadores = new int[Jugadores][3];
-		lugares = new int[Jugadores];
+		lugares = new int[Jugadores][2];
 		for(int i = 0; i < Jugadores; i++){
 			datosNumerosDeJugadores[i][0] = tablero.length-1;
 			datosNumerosDeJugadores[i][1] = 0;
@@ -161,7 +162,6 @@ public class Juego {
 	}
 	
 	static void imprimirTablero(){
-		
 		for(int i = 0; i < tablero.length; i++){
 			System.out.print("|");
 			for(int j = 0; j < tablero.length; j++){
@@ -170,7 +170,7 @@ public class Juego {
 			System.out.println("");
 		}
 		System.out.println("==== Menu Juego ====");
-		System.out.println("Turno del jugador " + (datosNumerosDeJugadores[turno - 1][2] + 1));
+		System.out.println("Turno de " + ( signosJugadores[datosNumerosDeJugadores[turno - 1][2]][0]));
 		System.out.println("1. Lanzar dado");
 		System.out.println("2. Regresar al menu");
 		try{
@@ -195,6 +195,40 @@ public class Juego {
 		}
 	}
 	
+	static void imprimirTableroFinal(){
+		for(int i = 0; i < tablero.length; i++){
+			System.out.print("|");
+			for(int j = 0; j < tablero.length; j++){
+				System.out.print(" " + tablero[i][j] + " |");
+			}
+			System.out.println("");
+		}
+		System.out.println("==== Juego Terminado ====");
+		System.out.println("Ha ganado " + ( signosJugadores[datosNumerosDeJugadores[turno - 1][2]][0]));
+		ordenarLugares();
+		System.out.println("1. Regresar al menu");
+		System.out.println("2. Salir del juego");
+		try{
+			int opcion = teclado.nextInt();
+			switch(opcion){
+				case 1:
+						inicioJuego();
+						menu();
+					break;
+				case 2:
+					System.exit(0);
+					break;
+				default:
+					System.out.println("No es una opcion valida.");
+					imprimirTablero();
+			}
+		}catch(InputMismatchException ex){
+			teclado.nextLine();
+			System.out.println("Opcion invalida, intente de nuevo.");
+			imprimirTableroFinal();
+		}
+	}
+	
 	static void moverJugador(int dado){
 		System.out.println("En el dado salio: " + dado);
 		for(int i = 1; i < (dado + 1); i++){
@@ -204,8 +238,8 @@ public class Juego {
 				datosNumerosDeJugadores[turno - 1][1] += Math.pow(-1, datosNumerosDeJugadores[turno - 1][0]);
 			}
 			if((datosNumerosDeJugadores[turno -1][0] == 0) && (datosNumerosDeJugadores[turno - 1][1] == tablero.length - 1)){
-				System.out.println("Ha ganado el jugador no. " + turno);
 				posicionarSignos();
+				imprimirTableroFinal();
 				System.exit(0);
 			}
 		}
@@ -241,7 +275,27 @@ public class Juego {
 	}
 	
 	static void ordenarLugares(){
-		
+		for(int i = 0; i < Jugadores; i++){
+			lugares[i][0] = i;
+			lugares[i][1] = (datosNumerosDeJugadores[i][0])*5;
+			lugares[i][1] += (lugares[i][1]%2==0)?(4-datosNumerosDeJugadores[i][1]):(datosNumerosDeJugadores[i][1]);
+		}
+		int x, y;
+		for(int i = 0; i < Jugadores; i++){
+			for(int j = 0; j < Jugadores-i-1; j++){
+				if(lugares[j][1] > lugares[j+1][1]){
+					x = lugares[j+1][0];
+					y = lugares[j+1][1];
+					lugares[j+1][0] = lugares[j][0];
+					lugares[j+1][1] = lugares[j][1];
+					lugares[j][0] = x;
+					lugares[j][1] = y;
+				}
+			}
+		}
+		for(int i = 0; i < Jugadores; i++){
+			System.out.println((i+1) + "." + signosJugadores[datosNumerosDeJugadores[lugares[i][0]][2]][0]);
+		}
 	}
 	
 	static void Configuracion(){
@@ -395,6 +449,11 @@ public class Juego {
 			}else{
 				Jugadores = num;
 				System.out.println("Ahora hay "+Jugadores+" Jugadores");
+				teclado.nextLine();
+				for(int i = 0; i < Jugadores; i++){
+					System.out.println("Ingrese el nombre del Jugador " + (i+1)+":");
+					signosJugadores[i][0] = teclado.nextLine();
+				}
 				Configuracion();
 			}
 		}catch(InputMismatchException ex){
