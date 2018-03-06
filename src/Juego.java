@@ -6,14 +6,14 @@ public class Juego {
 	
 	static Scanner teclado = new Scanner(System.in);
 	//Datos jugador
-	static String[][] signosJugadores = {{"Jugador 1", "#"},{"Jugador 2", "@"},{"Jugador 3", "%"},{"Jugador 4", "&"}};
+	static String[][] signosJugadores = {{"Jugador 1", "# "},{"Jugador 2", "@ "},{"Jugador 3", "% "},{"Jugador 4", "& "}};
 	static int[][] datosNumerosDeJugadores = new int[2][3];
 	static int Jugadores = 2, subidas = 1, bajadas = 1;
 	//Datos juego
 	static String[][] tablero = new String[5][5];
 	static int turno = 1;
 	static boolean activo = false;
-	static String letrasSub[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o"};
+	static String letrasSub[] = {"a ","b ","c ","d ","e ","f ","g ","h ","i ","j ","k ","l ","m ","n " ,"o "};
 	static int[][] PosEspeciales;
 	static int[][] lugares = new int[2][2];
 	
@@ -76,8 +76,8 @@ public class Juego {
 		PosEspeciales[0][2] = 0;
 		PosEspeciales[0][3] = tablero.length - 1;
 		PosEspeciales[0][4] = 0;
-		tablero[PosEspeciales[0][0]][PosEspeciales[0][1]] = "$";
-		tablero[PosEspeciales[0][2]][PosEspeciales[0][3]] = "$";
+		tablero[PosEspeciales[0][0]][PosEspeciales[0][1]] = "$ ";
+		tablero[PosEspeciales[0][2]][PosEspeciales[0][3]] = "$ ";
 		posicionarSubBaj();
 		posicionarSignos();
 	}
@@ -85,7 +85,7 @@ public class Juego {
 	static void limpiarTablero(){
 		for(int i = 0; i < tablero.length; i++){
 			for(int j = 0; j < tablero.length; j++){
-				tablero[i][j] = " ";
+				tablero[i][j] = "  ";
 			}
 		}
 	}
@@ -111,12 +111,12 @@ public class Juego {
 			do{
 				PosEspeciales[i + 1][0] = Randomizar(1, tablero.length - 1);
 				PosEspeciales[i + 1][1] = Randomizar(0, tablero.length);
-			}while(!(tablero[PosEspeciales[i + 1][0]][PosEspeciales[i + 1][1]].equals(" ")));
+			}while(!(tablero[PosEspeciales[i + 1][0]][PosEspeciales[i + 1][1]].equals("  ")));
 			tablero[PosEspeciales[i + 1][0]][PosEspeciales[i + 1][1]] = letrasSub[i];
 			do{
 				PosEspeciales[i + 1][2] = Randomizar(1, tablero.length - 1);
 				PosEspeciales[i + 1][3] = Randomizar(0, tablero.length);
-			}while(!(tablero[PosEspeciales[i + 1][2]][PosEspeciales[i + 1][3]].equals(" ")) || (PosEspeciales[i + 1][0] == PosEspeciales[i + 1][2]));
+			}while(!(tablero[PosEspeciales[i + 1][2]][PosEspeciales[i + 1][3]].equals("  ")) || (PosEspeciales[i + 1][0] == PosEspeciales[i + 1][2]));
 			tablero[PosEspeciales[i + 1][2]][PosEspeciales[i + 1][3]] = letrasSub[i];
 			PosEspeciales[i + 1][4] = 1;
 		}
@@ -124,12 +124,12 @@ public class Juego {
 			do{
 				PosEspeciales[i + 1 + subidas][0] = Randomizar(1, tablero.length - 1);
 				PosEspeciales[i + 1 + subidas][1] = Randomizar(0, tablero.length);
-			}while(!(tablero[PosEspeciales[i + 1][0]][PosEspeciales[i + 1 + subidas][1]].equals(" ")));
+			}while(!(tablero[PosEspeciales[i + 1][0]][PosEspeciales[i + 1 + subidas][1]].equals("  ")));
 			tablero[PosEspeciales[i + 1 + subidas][0]][PosEspeciales[i + 1 + subidas][1]] = letrasSub[i];
 			do{
 				PosEspeciales[i + 1 + subidas][2] = Randomizar(0, tablero.length - 1);
 				PosEspeciales[i + 1 + subidas][3] = Randomizar(0, tablero.length);
-			}while(!(tablero[PosEspeciales[i + 1][2]][PosEspeciales[i + 1 + subidas][3]].equals(" ")) || (PosEspeciales[i + 1 + subidas][0] == PosEspeciales[i + 1 + subidas][2]));
+			}while(!(tablero[PosEspeciales[i + 1][2]][PosEspeciales[i + 1 + subidas][3]].equals("  ")) || (PosEspeciales[i + 1 + subidas][0] == PosEspeciales[i + 1 + subidas][2]));
 			tablero[PosEspeciales[i + 1 + subidas][2]][PosEspeciales[i + 1 + subidas][3]] = letrasSub[i];
 			PosEspeciales[i + 1 + subidas][4] = 2;
 		}
@@ -145,13 +145,14 @@ public class Juego {
 		for(int i = 0; i < PosEspeciales.length; i++){
 			switch(PosEspeciales[i][4]){
 				case 0:
-					signo = "$";
+					signo = "$ ";
 					break;
 				case 1:
 					signo = letrasSub[i - 1];
 					break;
 				case 2:
 					signo = String.valueOf(i - subidas);
+					signo += ((i - subidas) < 10)?" ":"";
 			}
 			tablero[PosEspeciales[i][0]][PosEspeciales[i][1]] = signo;
 			tablero[PosEspeciales[i][2]][PosEspeciales[i][3]] = signo;
@@ -243,7 +244,7 @@ public class Juego {
 				System.exit(0);
 			}
 		}
-		if(!(tablero[datosNumerosDeJugadores[turno - 1][0]][datosNumerosDeJugadores[turno - 1][1]].equals(" "))){
+		if(!(tablero[datosNumerosDeJugadores[turno - 1][0]][datosNumerosDeJugadores[turno - 1][1]].equals("  "))){
 			for(int j = 0; j < subidas; j++){
 				if(tablero[datosNumerosDeJugadores[turno - 1][0]][datosNumerosDeJugadores[turno - 1][1]].equals(letrasSub[j])){
 						if(PosEspeciales[j + 1][0] < PosEspeciales[j + 1][2]){
@@ -259,7 +260,8 @@ public class Juego {
 				}
 			}
 			for(int j = 0; j < bajadas; j++){
-				if(tablero[datosNumerosDeJugadores[turno - 1][0]][datosNumerosDeJugadores[turno - 1][1]].equals(String.valueOf(j +1))){
+				String espacio = (j<9)? " ":"";
+				if(tablero[datosNumerosDeJugadores[turno - 1][0]][datosNumerosDeJugadores[turno - 1][1]].equals(String.valueOf(j +1) + espacio)){
 						if(PosEspeciales[j + 1 + subidas][0] < PosEspeciales[j + 1 + subidas][2]){
 							datosNumerosDeJugadores[turno - 1][0] = PosEspeciales[j + 1 + subidas][2];
 							datosNumerosDeJugadores[turno - 1][1] = PosEspeciales[j + 1 + subidas][3];
@@ -369,7 +371,7 @@ public class Juego {
 	static void subidasYBajadas(){
 		int numero;
 		System.out.println("Ingrese la cantidad de subidas: ");
-		if(tablero.length < 16){
+		if(tablero.length < 11){
 			do{
 				try{
 					numero = teclado.nextInt();
@@ -401,7 +403,7 @@ public class Juego {
 			}while(numero > 15 || numero < 1);
 		}
 		System.out.println("Ingrese la cantidad de bajadas: ");
-		if(tablero.length < 16){
+		if(tablero.length < 11){
 			do{
 				try{
 					numero = teclado.nextInt();
