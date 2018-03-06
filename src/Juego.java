@@ -343,6 +343,8 @@ public class Juego {
 		switch(opcion){
 			case 1:
 				tablero = new String[5][5];
+				subidas = 1;
+				bajadas = 1;
 				inicioJuego();
 				System.out.println("El tablero ahora es pequeño.");
 				opcionDimension();
